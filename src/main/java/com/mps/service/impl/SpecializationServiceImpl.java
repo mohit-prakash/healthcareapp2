@@ -1,7 +1,6 @@
 package com.mps.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,11 +33,14 @@ public class SpecializationServiceImpl implements ISpecializationService {
 	
 	@Override
 	public Specialization getOneSpecialization(Long id) {
-		Optional<Specialization> findById = repo.findById(id);
-		if (findById.isPresent())
-			return findById.get();
-		else
-			throw new SpecializationNotFoundException(id+" Not Found!!");
+		/*
+		 * Optional<Specialization> findById = repo.findById(id); if
+		 * (findById.isPresent()) return findById.get(); else throw new
+		 * SpecializationNotFoundException(id+" Not Found!!");
+		 */
+		
+		return repo.findById(id).orElseThrow(() -> new SpecializationNotFoundException(id+" Not Found!!"));
+//		orElseThrow(Supplier) & Supplier is functional interface and we can use lambda function ( T get() )
 	}
 	@Override
 	public Long updateSpecialization(Specialization s) {
