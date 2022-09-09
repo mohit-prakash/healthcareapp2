@@ -33,6 +33,9 @@
                 <div class="card-footer text-white bg-primary" th:if="${message!=null}">
                 	<span th:text=${message}></span>
                 </div>
+                <div>
+                    <a class="btn btn-success" th:href="@{/spec/excel}">Save as Excel <i class="fa fa-download" aria-hidden="true"></i></a>
+                </div>
             </div>
         </div>
     </body>

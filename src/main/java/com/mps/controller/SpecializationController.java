@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mps.entity.Specialization;
 import com.mps.exception.SpecializationNotFoundException;
 import com.mps.service.ISpecializationService;
+import com.mps.view.SpecializationExcelView;
 
 @Controller
 @RequestMapping("/spec")
@@ -97,4 +99,17 @@ public class SpecializationController {
 		}
 		return msg;
 	}
+	
+	@GetMapping("/excel")
+	public ModelAndView exportExcel()
+	{
+		ModelAndView mav = new ModelAndView();
+		mav.setView(new SpecializationExcelView());
+		//read data from db
+		List<Specialization> list = service.getAllSpecialization();
+		//send to excel impl class
+		mav.addObject("list", list);
+		return mav;
+	}
+	
 }
