@@ -29,9 +29,14 @@
                 }
                 else
                 {
+					var id=0; //for register page
+					if($("#id").val()!=undefined)  
+					{ //for edit page
+						id=$("#id").val();
+					}
                    $.ajax({
 						url:"checkcode",
-						data: {"code": val},
+						data: {"code": val,"id":id},
 						success: function(respTxt){
 							if(respTxt!="")
 							{
