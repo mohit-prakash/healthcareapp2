@@ -1,7 +1,6 @@
 package com.mps.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mps.entity.Specialization;
+import com.mps.exception.SpecializationNotFoundException;
 import com.mps.service.ISpecializationService;
 
 @Controller
@@ -50,17 +50,31 @@ public class SpecializationController {
 	@GetMapping("/delete")
 	public String removeSpecialization(@RequestParam("id") Long id,RedirectAttributes attribute)
 	{
-		service.removeSpecialization(id);
-		String msg="Specialization "+id+" is removed!!";
+		String msg="";
+		try {
+			service.removeSpecialization(id);
+			msg="Specialization "+id+" is removed!!";
+		}
+		catch(SpecializationNotFoundException e)
+		{
+			msg=e.getMessage();
+		}
 		attribute.addAttribute("message", msg);
 		return "redirect:all";
 	}
 	@GetMapping("/edit")
-	public String editSpecialization(@RequestParam("id") Long id, Model model)
+	public String editSpecialization(@RequestParam("id") Long id, Model model,RedirectAttributes attribute)
 	{
-		Optional<Specialization> specialization = service.getOneSpecialization(id);
-		model.addAttribute("specialization", specialization);
-		return "SpecializationEdit";
+		try {
+				Specialization specialization = service.getOneSpecialization(id);
+				model.addAttribute("specialization", specialization);
+				return "SpecializationEdit";
+		}
+		catch(SpecializationNotFoundException e)
+		{
+			attribute.addAttribute("message", e.getMessage());
+			return "redirect:all";
+		}
 	}
 	
 	@PostMapping("/update")

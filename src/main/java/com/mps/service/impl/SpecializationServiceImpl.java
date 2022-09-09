@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mps.entity.Specialization;
+import com.mps.exception.SpecializationNotFoundException;
 import com.mps.repository.SpecializationRepository;
 import com.mps.service.ISpecializationService;
 
@@ -27,12 +28,17 @@ public class SpecializationServiceImpl implements ISpecializationService {
 	}
 	@Override
 	public void removeSpecialization(Long id) {
-		repo.deleteById(id);
+		//repo.deleteById(id);
+		repo.delete(getOneSpecialization(id));
 	}
+	
 	@Override
-	public Optional<Specialization> getOneSpecialization(Long id) {
+	public Specialization getOneSpecialization(Long id) {
 		Optional<Specialization> findById = repo.findById(id);
-		return findById;
+		if (findById.isPresent())
+			return findById.get();
+		else
+			throw new SpecializationNotFoundException(id+" Not Found!!");
 	}
 	@Override
 	public Long updateSpecialization(Specialization s) {
