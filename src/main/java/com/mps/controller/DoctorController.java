@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.mps.entity.Doctor;
 import com.mps.exception.DoctorNotFoundException;
 import com.mps.service.IDoctorService;
+import com.mps.service.ISpecializationService;
 
 @Controller
 @RequestMapping("/doctor")
@@ -22,10 +23,20 @@ public class DoctorController {
 	
 	@Autowired
 	private IDoctorService service;
+	
+	@Autowired
+	private ISpecializationService specializationService;
+	
+	private void createDynamicUi(Model model)
+	{
+		model.addAttribute("specializations",specializationService.getSpecIdAndName());
+	}
+	
 	@GetMapping("/register")
 	public String docRegister(@RequestParam(value = "message",required = false) String message,Model model) 
 	{
 		model.addAttribute("message",message);
+		createDynamicUi(model);
 		return "DoctorRegister";
 	}
 	
@@ -65,6 +76,7 @@ public class DoctorController {
 		try {
 			Doctor doctor = service.getOneDoctor(id);
 			model.addAttribute("doctor",doctor);
+			createDynamicUi(model);
 			return "DoctorEdit";
 		} catch (DoctorNotFoundException dnfe) {
 			attribute.addAttribute("message",dnfe.getMessage());

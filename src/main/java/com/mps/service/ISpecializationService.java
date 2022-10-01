@@ -1,6 +1,7 @@
 package com.mps.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.mps.entity.Specialization;
 
@@ -12,4 +13,5 @@ public interface ISpecializationService {
 	Long updateSpecialization(Specialization s);
 	boolean isSpecCodeExist(String specCode);
 	boolean isSpecCodeExistForEdit(String specCode,Long id);
+	Map<Long,String> getSpecIdAndName();
 }

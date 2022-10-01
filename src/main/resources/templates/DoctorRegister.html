@@ -49,6 +49,21 @@
                            <span id="emailError"></span> 
                         </div>
                     </div>
+					<!-- Dynamic UI-->
+                    	<div class="row">
+                        <div class="col-2">
+                            <label for="specializtion">Specialization</label>
+                        </div>
+                        <div class="col-4">
+                            	<select id="specialization" name="specialization.id" class="form-control">
+                            		<option value="">--Select--</option>
+                            		<option th:each="ob:${specializations}" th:text="${ob.value}" th:value="${ob.key}"></option>
+                            	</select>
+                        </div>
+                        <div class="col-6">
+                           <span id="specializationError"></span> 
+                        </div>
+                    </div>
                     <!-- #row4 -->
                     <div class="row">
                         <div class="col-2">
