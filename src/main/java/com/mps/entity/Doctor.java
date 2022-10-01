@@ -39,4 +39,7 @@ public class Doctor {
 	@ManyToOne
 	@JoinColumn(name = "spec_id_fk_col") //store only spec_id
 	private Specialization specialization;
+	
+	@Column(name="doc_img_col")
+	private String photoLoc;
 }
