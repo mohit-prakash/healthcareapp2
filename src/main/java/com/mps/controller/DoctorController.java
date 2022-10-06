@@ -3,6 +3,7 @@ package com.mps.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +17,14 @@ import com.mps.entity.Doctor;
 import com.mps.exception.DoctorNotFoundException;
 import com.mps.service.IDoctorService;
 import com.mps.service.ISpecializationService;
+import com.mps.util.MyMailUtil;
 
 @Controller
 @RequestMapping("/doctor")
 public class DoctorController {
+	
+	@Autowired
+	private MyMailUtil mailUtil;
 	
 	@Autowired
 	private IDoctorService service;
@@ -44,7 +49,15 @@ public class DoctorController {
 	public String saveDoctor(@ModelAttribute Doctor doctor,RedirectAttributes attribute)
 	{
 		Long id = service.addDoctor(doctor);
-		attribute.addAttribute("message", "Doctor "+id+" registered successfully!!");
+		String message="Doctor "+id+" registered successfully!!";
+		attribute.addAttribute("message", message);
+		new Thread(()->{
+			if(id!=null)
+			{
+				mailUtil.send(doctor.getEmail(),"Success" , message, new ClassPathResource("/static/myres/sample.pdf"));
+			}
+			}
+		).start();
 		return "redirect:register";
 	}
 	
@@ -92,6 +105,5 @@ public class DoctorController {
 		return "redirect:all";
 		
 	}
-	
-	
+		
 }
