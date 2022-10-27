@@ -68,7 +68,7 @@ public class PatientController {
 	@PostMapping("/update")
 	public String updatePatient(@ModelAttribute Patient patient,RedirectAttributes attributes)
 	{
-		Long id = service.addPatient(patient);
+		Long id = service.updatePatient(patient);
 		String message="Patient "+id+" updated successfully!!";
 		attributes.addAttribute("message",message);
 		return "redirect:all";

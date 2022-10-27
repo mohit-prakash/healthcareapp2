@@ -100,7 +100,7 @@ public class DoctorController {
 	@PostMapping("/update")
 	public String updateDoctor(@ModelAttribute Doctor doctor, RedirectAttributes attribute)
 	{
-		Long id = service.addDoctor(doctor);
+		Long id = service.updateDoctor(doctor);
 		attribute.addAttribute("message","Doctor "+id+" updated successfully!!");
 		return "redirect:all";
 		
